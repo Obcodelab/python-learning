@@ -1,0 +1,36 @@
+SIWES Python Phase - Sample Document
+
+Retrieval-Augmented Generation, usually shortened to RAG, is a way to make a
+language model answer questions about documents it was never trained on. The
+model on its own only knows what was in its training data, so if you ask it
+about a specific report or manual it cannot help, and it may invent an answer.
+RAG solves this by fetching the relevant passages from your own documents and
+placing them in the prompt before the model writes its reply.
+
+A RAG system has two phases. The first phase is indexing, which happens once
+per document. The document text is extracted, split into smaller chunks, and
+each chunk is passed through an embedding model that produces a vector. Those
+vectors are stored in a vector database. The second phase is answering, which
+happens for every question. The question is embedded with the same model, the
+vector database returns the chunks whose vectors are closest to the question
+vector, and those chunks become the context for the language model.
+
+Chunking matters more than it first appears. Embedding models have a limit on
+how much text they accept, so long documents must be divided. Smaller chunks
+also make retrieval more precise, because the system returns the exact
+paragraph that answers the question instead of a whole page of loosely related
+text. A small overlap between neighbouring chunks keeps a sentence that lands
+on a boundary from losing its context.
+
+Vector databases such as Pinecone are built to store large numbers of
+embeddings and to search them quickly. They support two main operations:
+upserting a vector along with its metadata, and querying with a vector to get
+back the nearest stored vectors ranked by similarity. Cosine similarity is the
+usual measure; it compares the direction of two vectors and ignores their
+length.
+
+Keeping answers grounded is the final piece. The prompt instructs the model to
+answer only from the supplied context and to say that it does not know when
+the context does not contain the answer. Without that instruction the model
+will fall back on its general knowledge or guess, which defeats the purpose of
+building a document question and answer system in the first place.
