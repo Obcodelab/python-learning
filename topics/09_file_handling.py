@@ -1,8 +1,5 @@
-"""File handling with context managers.
-
-`with open(...)` closes the file automatically, even if an error happens.
-This file writes a sample document, reads it back, then cleans up.
-"""
+"""File handling with context managers: `with open(...)` closes the file
+automatically, even if an error happens."""
 
 from pathlib import Path
 

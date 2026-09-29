@@ -1,13 +1,6 @@
-"""Vector stores.
-
-A vector store keeps (id, vector, metadata) records and returns the records
-whose vectors are closest to a query vector.
-
-- InMemoryStore keeps everything in a dict and saves it to a JSON file, so the
-  index survives between runs without any external service.
-- PgVectorStore uses Postgres with the pgvector extension. The database driver
-  is only imported when this backend is actually used.
-"""
+"""Vector stores keep (id, vector, metadata) records and return the ones
+closest to a query vector. InMemoryStore saves to a JSON file; PgVectorStore
+uses Postgres + pgvector and only imports its driver when used."""
 
 from __future__ import annotations
 

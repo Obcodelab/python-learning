@@ -1,8 +1,5 @@
-"""Splitting a document into overlapping chunks.
-
-Chunks are measured in words. A small overlap keeps a sentence that falls on a
-boundary from being cut off from its context in both chunks.
-"""
+"""Splitting a document into overlapping chunks of words, so a sentence on a
+chunk boundary keeps its context in both chunks."""
 
 from __future__ import annotations
 
@@ -17,9 +14,8 @@ def normalise(text: str) -> str:
 def chunk_text(text: str, chunk_size: int = 120, overlap: int = 20) -> list[str]:
     """Return a list of chunk strings.
 
-    chunk_size: maximum words in a chunk
-    overlap:    words repeated from the end of one chunk at the start of the next
-    """
+    chunk_size is the max words per chunk; overlap is how many words repeat
+    at the start of the next chunk."""
     if chunk_size <= 0:
         raise ValueError("chunk_size must be positive")
     if overlap < 0 or overlap >= chunk_size:

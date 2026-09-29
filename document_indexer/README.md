@@ -18,19 +18,21 @@ same steps.
 Both the embedder and the vector store are pluggable, so the project runs with nothing installed and upgrades
 automatically when configured.
 
-| Component    | Offline default                        | Real backend                    | Switches on          |
-|--------------|----------------------------------------|---------------------------------|----------------------|
-| Embedder     | `FakeEmbedder` (deterministic hashing) | OpenAI `text-embedding-3-small` | `OPENAI_API_KEY` set |
-| Vector store | `InMemoryStore` (JSON file on disk)    | Postgres + `pgvector`           | `DATABASE_URL` set   |
+| Component    | Offline default                        | Real backend                | Switches on          |
+|--------------|----------------------------------------|------------------------------|-----------------------|
+| Embedder     | `FakeEmbedder` (deterministic hashing) | Gemini `gemini-embedding-001` | `GEMINI_API_KEY` set |
+| Vector store | `InMemoryStore` (JSON file on disk)    | Postgres + `pgvector`       | `DATABASE_URL` set    |
 
 `INDEXER_OFFLINE=1` forces the offline backends even when the others are configured.
+Gemini has a genuine free tier (no credit card) — get a key at
+https://aistudio.google.com/apikey.
 
 ## Setup
 
 ```bash
 uv sync
 # optional, only for the real backends:
-uv sync --extra openai --extra postgres
+uv sync --extra gemini --extra postgres
 ```
 
 Configuration comes from environment variables (a `.env` file is read automatically). See `.env.example`.
@@ -44,8 +46,8 @@ available on the server; the indexer runs `CREATE EXTENSION IF NOT EXISTS
 vector` and creates its table with an HNSW cosine index on first use.
 
 Each embedder gets its own table, `<PG_TABLE>_<embedder>` — e.g.
-`document_chunks_fake` (256-dim) and `document_chunks_openai` (1536-dim) — so
-toggling `OPENAI_API_KEY` / `INDEXER_OFFLINE` never collides and you never have
+`document_chunks_fake` (256-dim) and `document_chunks_gemini` (768-dim) — so
+toggling `GEMINI_API_KEY` / `INDEXER_OFFLINE` never collides and you never have
 to drop anything. `uv run python document_indexer/main.py info` prints the
 active table.
 

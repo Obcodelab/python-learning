@@ -1,12 +1,7 @@
-"""Embedders.
+"""Embedders: turn a list of texts into a list of equal-length vectors.
 
-An embedder turns a list of texts into a list of vectors of equal length.
-
-- FakeEmbedder works offline and is deterministic, so tests and demos are
-  repeatable. It hashes words into a fixed number of buckets and normalises
-  the result, which is enough for the similarity search to behave sensibly.
-- OpenAIEmbedder calls the real API. It is only imported when used.
-"""
+FakeEmbedder is deterministic and offline; GeminiEmbedder calls Google's
+free-tier Gemini API and is only imported when used."""
 
 from __future__ import annotations
 
@@ -57,39 +52,44 @@ class FakeEmbedder:
         return _l2_normalise(vector)
 
 
-class OpenAIEmbedder:
-    """Wraps the OpenAI embeddings API."""
+class GeminiEmbedder:
+    """Wraps Google's Gemini embeddings API (gemini-embedding-001).
 
-    name = "openai"
+    Output is truncated to 768 dims (pgvector's HNSW cap is 2000) via MRL and
+    re-normalised, since Gemini only guarantees unit length at full dimension."""
 
-    # Output dimensions for the common models.
+    name = "gemini"
+
+    # Output dimension actually used (after MRL truncation for the default model).
     _DIMENSIONS = {
-        "text-embedding-3-small": 1536,
-        "text-embedding-3-large": 3072,
-        "text-embedding-ada-002": 1536,
+        "gemini-embedding-001": 768,
     }
 
     def __init__(self, api_key: str, model: str) -> None:
         try:
-            from openai import OpenAI
+            from google import genai
+            from google.genai import types
         except ImportError as exc:  # pragma: no cover - depends on optional extra
             raise RuntimeError(
-                "openai package not installed. Run: uv sync --extra openai"
+                "google-genai package not installed. Run: uv sync --extra gemini"
             ) from exc
 
-        self._client = OpenAI(api_key=api_key)
+        self._client = genai.Client(api_key=api_key)
         self.model = model
-        self.dimension = self._DIMENSIONS.get(model, 1536)
+        self.dimension = self._DIMENSIONS.get(model, 768)
+        self._config = types.EmbedContentConfig(output_dimensionality=self.dimension)
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         if not texts:
             return []
-        response = self._client.embeddings.create(model=self.model, input=texts)
+        response = self._client.models.embed_content(
+            model=self.model, contents=texts, config=self._config
+        )
         # The API returns items in the same order as the input.
-        return [item.embedding for item in response.data]
+        return [_l2_normalise(item.values) for item in response.embeddings]
 
 
 def get_embedder(config: Config) -> Embedder:
-    if config.use_openai:
-        return OpenAIEmbedder(config.openai_api_key, config.openai_embedding_model)
+    if config.use_gemini:
+        return GeminiEmbedder(config.gemini_api_key, config.gemini_embedding_model)
     return FakeEmbedder()

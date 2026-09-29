@@ -46,6 +46,6 @@ uv run uvicorn topics.11_fastapi_intro:app --reload
 
 `document_indexer/` combines document chunking, embedding generation and
 vector storage into one pipeline. It runs offline with a fake embedder and an
-in-memory store, and switches to OpenAI embeddings and a Postgres + `pgvector`
-store when `OPENAI_API_KEY` / `DATABASE_URL` are set. See
+in-memory store, and switches to Gemini embeddings and a Postgres + `pgvector`
+store when `GEMINI_API_KEY` / `DATABASE_URL` are set. See
 `document_indexer/README.md`.

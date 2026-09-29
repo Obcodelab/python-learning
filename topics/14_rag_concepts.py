@@ -1,25 +1,7 @@
-"""RAG concepts.
-
-RAG stands for Retrieval-Augmented Generation. A language model only knows what
-was in its training data, so it cannot answer questions about a document you
-give it later. RAG fixes that by retrieving the relevant passages from the
-document and putting them in front of the model at question time.
-
-There are two phases:
-
-    Indexing (once per document):
-        document -> split into chunks -> turn each chunk into a vector
-                 -> store the vectors
-
-    Answering (for every question):
-        question -> turn into a vector -> find the closest chunks
-                 -> use them as context -> answer from that context,
-                    or say the answer is not there
-
-This file runs a small end-to-end version of both phases. To keep it readable
-it uses word overlap as a stand-in for a real embedding model: the more content
-words a chunk shares with the question, the more relevant it is.
-"""
+"""RAG (Retrieval-Augmented Generation) lets a model answer questions about a
+document it was never trained on, by retrieving the relevant passages first
+and putting them in front of the model at question time. This file runs a
+small end-to-end version using word overlap as a stand-in for embeddings."""
 
 from __future__ import annotations
 
@@ -36,7 +18,8 @@ def content_words(text: str) -> set[str]:
     return {w for w in re.findall(r"[a-z]+", text.lower()) if w not in _STOPWORDS}
 
 
-# --- phase 1: indexing ---
+# --- phase 1: indexing (once per document) ---
+#   document -> split into chunks -> turn each chunk into a vector -> store
 
 def split_into_chunks(document: str) -> list[str]:
     """Here a chunk is one sentence. A real system uses fixed-size word windows."""
@@ -48,7 +31,9 @@ def build_index(document: str) -> list[tuple[str, set[str]]]:
     return [(chunk, content_words(chunk)) for chunk in split_into_chunks(document)]
 
 
-# --- phase 2: answering ---
+# --- phase 2: answering (for every question) ---
+#   question -> vector -> find closest chunks -> use as context -> answer,
+#   or say the answer is not there
 
 def retrieve(index: list[tuple[str, set[str]]], question: str, top_k: int = 2):
     q_words = content_words(question)

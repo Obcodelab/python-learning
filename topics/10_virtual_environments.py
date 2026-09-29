@@ -1,26 +1,7 @@
-"""Virtual environments.
-
-A virtual environment is a private copy of Python for one project, so each
-project can install its own packages and versions without clashing.
-
-Creating one with the standard library tool:
-
-    python -m venv .venv           create it
-    source .venv/bin/activate      use it (Linux/macOS)
-    pip install fastapi            installs into .venv, not the system Python
-    pip freeze > requirements.txt  record what is installed
-    deactivate                     leave it
-
-This project is managed with `uv`, which creates the environment and resolves
-dependencies from pyproject.toml in one step:
-
-    uv sync                        create .venv and install everything
-    uv run python topics/10_virtual_environments.py
-    uv add pypdf                   add a dependency and update uv.lock
-
-This file just inspects the interpreter it is running under so the effect of
-an activated environment is visible.
-"""
+"""Virtual environments: a private copy of Python per project, so packages
+don't clash between projects. This project uses `uv` (uv sync, uv run,
+uv add) instead of the stdlib venv + pip. This file inspects the interpreter
+it's running under so an activated environment's effect is visible."""
 
 from __future__ import annotations
 

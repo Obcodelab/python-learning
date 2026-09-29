@@ -1,9 +1,6 @@
 """Command-line interface for the Document Indexer.
 
-    python document_indexer/main.py index <path>
-    python document_indexer/main.py search "<query>" [--top-k N]
-    python document_indexer/main.py info
-"""
+    python document_indexer/main.py <index PATH | search QUERY | info>"""
 
 from __future__ import annotations
 

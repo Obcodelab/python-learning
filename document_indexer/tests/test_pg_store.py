@@ -1,10 +1,7 @@
-"""Postgres + pgvector integration tests.
+"""Postgres + pgvector integration tests, skipped unless TEST_DATABASE_URL is
+set. Each test uses its own table and drops it afterwards.
 
-Skipped unless TEST_DATABASE_URL points at a database where the `vector`
-extension is available. Each test uses its own table and drops it afterwards.
-
-    TEST_DATABASE_URL=postgresql:///siwes_rag uv run pytest -k pg_store
-"""
+    TEST_DATABASE_URL=postgresql:///siwes_rag uv run pytest -k pg_store"""
 
 from __future__ import annotations
 

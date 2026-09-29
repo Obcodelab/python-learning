@@ -13,7 +13,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # Only needed to run the Document Indexer against real services.
-openai = ["openai>=1.54"]
+gemini = ["google-genai>=1.0"]
 postgres = ["psycopg[binary]>=3.2", "pgvector>=0.3"]
 
 [dependency-groups]

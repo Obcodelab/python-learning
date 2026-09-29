@@ -20,8 +20,8 @@ _DEFAULT_INDEX_PATH = _PROJECT_ROOT / "data" / "index.json"
 
 @dataclass
 class Config:
-    openai_api_key: str | None = None
-    openai_embedding_model: str = "text-embedding-3-small"
+    gemini_api_key: str | None = None
+    gemini_embedding_model: str = "gemini-embedding-001"
 
     # Postgres + pgvector. When set, it replaces the local JSON store.
     database_url: str | None = None
@@ -42,9 +42,9 @@ class Config:
     def from_env(cls) -> "Config":
         return cls(
             offline=os.getenv("INDEXER_OFFLINE", "").lower() in {"1", "true", "yes"},
-            openai_api_key=os.getenv("OPENAI_API_KEY") or None,
-            openai_embedding_model=os.getenv(
-                "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
+            gemini_api_key=os.getenv("GEMINI_API_KEY") or None,
+            gemini_embedding_model=os.getenv(
+                "GEMINI_EMBEDDING_MODEL", "gemini-embedding-001"
             ),
             database_url=os.getenv("DATABASE_URL") or None,
             pg_table=os.getenv("PG_TABLE", "document_chunks"),
@@ -55,8 +55,8 @@ class Config:
         )
 
     @property
-    def use_openai(self) -> bool:
-        return bool(self.openai_api_key) and not self.offline
+    def use_gemini(self) -> bool:
+        return bool(self.gemini_api_key) and not self.offline
 
     @property
     def use_postgres(self) -> bool:

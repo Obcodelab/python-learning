@@ -1,10 +1,6 @@
-"""Python syntax and basics.
-
-A few things to remember about Python's syntax:
-- no semicolons or braces; indentation defines blocks
-- no type declarations required (dynamic typing)
-- variables do not need to be declared with a keyword
-"""
+"""Python syntax and basics: no semicolons or braces (indentation defines
+blocks), no required type declarations, no keyword needed to declare a
+variable."""
 
 
 def main() -> None:

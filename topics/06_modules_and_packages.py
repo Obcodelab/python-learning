@@ -1,11 +1,7 @@
-"""Modules and packages.
+"""Modules and packages: a module is a .py file, a package is a folder of
+modules, and `import` brings names in from either.
 
-A module is just a .py file. A package is a folder of modules.
-You bring names in with `import`.
-
-Run this file directly to see the imports in action:
-    uv run python topics/06_modules_and_packages.py
-"""
+    uv run python topics/06_modules_and_packages.py"""
 
 # 1. Import a whole standard-library module
 import math

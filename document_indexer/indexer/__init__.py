@@ -1,8 +1,4 @@
-"""Document Indexer package.
-
-The indexing half of a RAG pipeline: chunk a document, embed the chunks and
-store the vectors so they can be searched by meaning.
-"""
+"""Document Indexer: chunk a document, embed the chunks, store the vectors."""
 
 from .config import Config
 from .embeddings import FakeEmbedder

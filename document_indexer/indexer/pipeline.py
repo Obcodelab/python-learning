@@ -1,8 +1,7 @@
 """The pipeline that ties the steps together.
 
     index_file(path)  ->  read -> chunk -> embed -> store
-    search(query)     ->  embed query -> store.query -> ranked chunks
-"""
+    search(query)     ->  embed query -> store.query -> ranked chunks"""
 
 from __future__ import annotations
 

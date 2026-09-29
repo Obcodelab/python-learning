@@ -1,14 +1,7 @@
-"""FastAPI introduction.
+"""FastAPI introduction: routing, request/response models with Pydantic, and
+the automatic docs.
 
-Routing, request/response models with Pydantic, and the automatic docs.
-
-Run it:
-    uv run uvicorn topics.11_fastapi_intro:app --reload
-
-Then open:
-    http://127.0.0.1:8000/docs      interactive documentation
-    http://127.0.0.1:8000/notes     the GET endpoint below
-"""
+    uv run uvicorn topics.11_fastapi_intro:app --reload"""
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field

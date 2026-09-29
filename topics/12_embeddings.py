@@ -1,13 +1,6 @@
-"""Embeddings.
-
-An embedding is a list of numbers that represents the meaning of a piece of
-text. Texts with similar meaning end up close together in vector space, so we
-can compare them with a similarity measure instead of matching exact words.
-
-This file uses a small hand-made embedder (word counting) just to show the
-idea. Real models like OpenAI's text-embedding-3-small return vectors with
-hundreds of dimensions.
-"""
+"""Embeddings: numbers that represent a text's meaning, so similar texts end
+up close together and can be compared instead of matched word-for-word. This
+file uses a hand-made word-counting embedder in place of a real model."""
 
 import math
 import re
@@ -18,11 +11,8 @@ VOCAB = ["python", "recipe", "embedding", "vector", "database", "search", "rag",
 def embed(text: str) -> list[float]:
     """Very rough embedding: how often each vocab term appears, normalised.
 
-    The check is `term in word` rather than `word == term`, so a plural or
-    longer form still counts ('databases' contains 'database'). A real
-    embedding model handles plurals, synonyms and meaning properly; this is
-    just enough to make the demo behave sensibly.
-    """
+    Uses `term in word` (not `word == term`) so a plural still counts
+    ('databases' contains 'database'); a real model handles meaning properly."""
     words = re.findall(r"[a-z]+", text.lower())
     counts = [
         float(sum(1 for word in words if term in word))

@@ -1,8 +1,5 @@
-"""Inheritance.
-
-A child class extends a parent class and can override its methods.
-super() calls back into the parent.
-"""
+"""Inheritance: a child class extends a parent and can override its methods.
+super() calls back into the parent."""
 
 from abc import ABC, abstractmethod
 

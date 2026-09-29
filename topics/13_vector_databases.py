@@ -1,12 +1,7 @@
-"""Vector databases.
-
-A vector database stores embeddings and finds the nearest ones to a query
-vector quickly. This file builds a tiny in-memory version to show the
-operations such a store provides:
-
-    upsert(id, vector, metadata)   add or replace a vector
-    query(vector, top_k)           return the closest stored vectors
-"""
+"""Vector databases store embeddings and find the nearest ones to a query
+vector quickly. This file builds a tiny in-memory version with the two
+operations such a store provides: upsert(id, vector, metadata) and
+query(vector, top_k)."""
 
 import math
 import re
@@ -19,8 +14,7 @@ def embed(text: str) -> list[float]:
     """Toy embedder (same idea as 12_embeddings.py), kept local so this file runs alone.
 
     Uses `term in word` so a plural or longer form still counts ('chunking'
-    contains 'chunk'). A real embedding model would handle meaning properly.
-    """
+    contains 'chunk'). A real embedding model would handle meaning properly."""
     words = re.findall(r"[a-z]+", text.lower())
     counts = [
         float(sum(1 for word in words if term in word))
